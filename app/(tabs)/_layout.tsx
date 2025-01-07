@@ -1,17 +1,27 @@
 import { Link, Tabs } from 'expo-router';
-import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
 import { useFonts, SpaceGrotesk_500Medium } from '@expo-google-fonts/space-grotesk';
 import { HeaderButton } from '../../components/HeaderButton';
 import { TabBarIcon } from '../../components/TabBarIcon';
+import { useEffect } from 'react';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function TabLayout() {
-  let [fontsLoaded] = useFonts({
-    SpaceGrotesk: SpaceGrotesk_500Medium,
+  const [fontsLoaded] = useFonts({
+    SpaceGrotesk_500Medium,
   });
 
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return null;
   }
+
   return (
     <Tabs
       screenOptions={{

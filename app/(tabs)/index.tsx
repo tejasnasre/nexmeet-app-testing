@@ -7,8 +7,18 @@ import { FlatList } from 'react-native';
 export default function Events() {
   return (
     <>
-      <Stack.Screen options={{ title: 'Events' }} />
-      <FlatList data={events} renderItem={({ item }) => <EventListItem event={item} />} />
+      <Stack.Screen
+        options={{
+          title: 'Events',
+          headerTitleStyle: { fontFamily: 'SpaceGrotesk' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <FlatList
+        className="bg-white"
+        data={events}
+        renderItem={({ item }) => <EventListItem event={item} />}
+      />
     </>
   );
 }
