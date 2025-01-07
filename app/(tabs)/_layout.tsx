@@ -1,9 +1,17 @@
 import { Link, Tabs } from 'expo-router';
-
+import AppLoading from 'expo-app-loading';
+import { useFonts, SpaceGrotesk_500Medium } from '@expo-google-fonts/space-grotesk';
 import { HeaderButton } from '../../components/HeaderButton';
 import { TabBarIcon } from '../../components/TabBarIcon';
 
 export default function TabLayout() {
+  let [fontsLoaded] = useFonts({
+    SpaceGrotesk: SpaceGrotesk_500Medium,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
     <Tabs
       screenOptions={{
