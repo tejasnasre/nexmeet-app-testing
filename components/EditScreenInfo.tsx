@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { Text, View, Button } from 'react-native';
+import { supabase } from '~/utils/supabase';
 
 export const EditScreenInfo = ({ path }: { path: string }) => {
   const title = 'Open up the code for this screen:';
@@ -13,6 +14,7 @@ export const EditScreenInfo = ({ path }: { path: string }) => {
           <Text>{path}</Text>
         </View>
         <Text className={styles.getStartedText}>{description}</Text>
+        <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
       </View>
     </View>
   );

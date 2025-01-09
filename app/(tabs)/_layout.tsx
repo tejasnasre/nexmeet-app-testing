@@ -1,25 +1,13 @@
-import { Link, Tabs } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useFonts, SpaceGrotesk_500Medium } from '@expo-google-fonts/space-grotesk';
+import { Link, Redirect, Tabs } from 'expo-router';
 import { HeaderButton } from '../../components/HeaderButton';
 import { TabBarIcon } from '../../components/TabBarIcon';
-import { useEffect } from 'react';
-
-SplashScreen.preventAutoHideAsync();
+import { useAuth } from '~/contexts/AuthProvider';
 
 export default function TabLayout() {
-  const [fontsLoaded] = useFonts({
-    SpaceGrotesk_500Medium,
-  });
+  const { isAuthenticated }: any = useAuth();
 
-  useEffect(() => {
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
+  if (!isAuthenticated) {
+    return <Redirect href="/login" />;
   }
 
   return (
@@ -30,7 +18,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
+          title: 'Events',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>

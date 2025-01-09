@@ -1,4 +1,4 @@
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, Pressable } from 'react-native';
 import React from 'react';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import events from '~/assets/events.json';
@@ -28,7 +28,7 @@ const eventPage = () => {
       <View className="gap-4 p-4 font-SpaceGrotesk">
         <Image className="aspect-video w-full rounded-md" source={{ uri: event.image }} />
         <Text className="font-SpaceGrotesk text-3xl">{event.title}</Text>
-        <Text className="font-SpaceGrotesk text-2xl">{event.description}</Text>
+        <Text className="font-SpaceGrotesk text-xl">{event.description}</Text>
         <View className="flex-row items-start gap-4">
           <AntDesign name="calendar" size={24} color="gray" />
           <View className="flex-col gap-1">
@@ -41,6 +41,14 @@ const eventPage = () => {
           <Entypo name="location-pin" size={28} color="gray" />
           <Text className="font-SpaceGrotesk text-xl text-gray-500">{event.location}</Text>
         </View>
+      </View>
+
+      {/* Footer */}
+      <View className="border-t-1 absolute bottom-0 left-0 right-0 flex-row items-center justify-between border border-gray-300 px-6 py-8">
+        <Text className="font-SpaceGrotesk text-xl">Free</Text>
+        <Pressable className="h-14 w-48 items-center justify-center rounded-xl bg-red-400 px-3">
+          <Text className="font-SpaceGrotesk text-xl text-white">Join And RSVP</Text>
+        </Pressable>
       </View>
     </>
   );

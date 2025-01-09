@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { eventlist } from '../types/eventlist';
+import { eventlist } from '../types/types';
 import dayjs from 'dayjs';
 import { Link } from 'expo-router';
 
@@ -14,7 +14,7 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
   return (
     <>
       <Link href={`/${event.id}`} asChild>
-        <Pressable className="mt-4 flex-col gap-3 p-2">
+        <Pressable className="mt-4 flex-col gap-3 p-2 px-4">
           <View className="flex-row justify-between">
             <View className="w-52 flex-col justify-center gap-2">
               <Text className="font-SpaceGrotesk font-semibold uppercase text-amber-600">

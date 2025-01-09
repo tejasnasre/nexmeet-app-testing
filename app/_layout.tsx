@@ -1,17 +1,39 @@
 import '../global.css';
-
+import * as SplashScreen from 'expo-splash-screen';
+import { useFonts, SpaceGrotesk_500Medium } from '@expo-google-fonts/space-grotesk';
 import { Stack } from 'expo-router';
+import { useEffect } from 'react';
+import AuthProvider from '~/contexts/AuthProvider';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
 };
 
+SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    SpaceGrotesk_500Medium,
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  console.log('Fonts loaded:', fontsLoaded); // Add this line
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-    </Stack>
+    <AuthProvider>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+      </Stack>
+    </AuthProvider>
   );
 }
