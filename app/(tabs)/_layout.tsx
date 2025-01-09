@@ -14,24 +14,27 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: 'black',
+        tabBarLabelStyle: { fontFamily: 'YourCustomFont' },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Events',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <HeaderButton />
             </Link>
           ),
+          tabBarLabelStyle: { fontFamily: 'YourCustomFont' },
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="profile"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          tabBarLabelStyle: { fontFamily: 'YourCustomFont' },
         }}
       />
     </Tabs>
