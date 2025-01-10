@@ -7,14 +7,14 @@ export default function TabLayout() {
   const { isAuthenticated }: any = useAuth();
 
   if (!isAuthenticated) {
-    return <Redirect href="/login" />;
+    return <Redirect href="/welcomepage" />;
   }
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: 'black',
-        tabBarLabelStyle: { fontFamily: 'YourCustomFont' },
+        tabBarLabelStyle: { fontFamily: 'SpaceGrotesk' },
       }}>
       <Tabs.Screen
         name="index"
@@ -26,7 +26,7 @@ export default function TabLayout() {
               <HeaderButton />
             </Link>
           ),
-          tabBarLabelStyle: { fontFamily: 'YourCustomFont' },
+          tabBarLabelStyle: { fontFamily: 'SpaceGrotesk' },
         }}
       />
       <Tabs.Screen
@@ -34,7 +34,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
-          tabBarLabelStyle: { fontFamily: 'YourCustomFont' },
+          tabBarLabelStyle: { fontFamily: 'SpaceGrotesk' },
         }}
       />
     </Tabs>

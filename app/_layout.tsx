@@ -4,6 +4,7 @@ import { useFonts, SpaceGrotesk_500Medium } from '@expo-google-fonts/space-grote
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
 import AuthProvider from '~/contexts/AuthProvider';
+import { StatusBar } from 'expo-status-bar';
 
 export const unstable_settings = {
   initialRouteName: '(tabs)',
@@ -29,6 +30,7 @@ export default function RootLayout() {
   }
   return (
     <AuthProvider>
+      <StatusBar hidden={false} />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
