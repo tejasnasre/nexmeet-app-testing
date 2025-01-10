@@ -1,45 +1,61 @@
-import { Text, View, Image, Pressable } from 'react-native';
-import React from 'react';
+import { Text, View, Image, Pressable, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useLocalSearchParams, Stack } from 'expo-router';
-import events from '~/assets/events.json';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import dayjs from 'dayjs';
+import { supabase } from '~/utils/supabase';
+import { eventlist } from '~/types/types';
 
 const eventPage = () => {
   const { eventid } = useLocalSearchParams();
 
-  const event = events.find((e) => e.id === eventid);
+  const [event, setEvent] = useState<eventlist[] | null>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetcheventid = async () => {
+      setLoading(true);
+      let { data: events, error } = await supabase.from('events').select('*').eq('id', eventid);
+      setEvent(events);
+      setLoading(false);
+    };
+    fetcheventid();
+  }, [eventid]);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
 
   if (!event) {
-    return <Text>Event Not Found</Text>;
+    return <Text>Event Not Found!</Text>;
   }
 
   return (
     <>
       <Stack.Screen
         options={{
-          title: event.title,
+          title: event[0]?.title,
           headerBackVisible: true,
           headerTitleStyle: { fontFamily: 'SpaceGrotesk' },
           headerTitleAlign: 'center',
         }}
       />
       <View className="gap-4 p-4 font-SpaceGrotesk">
-        <Image className="aspect-video w-full rounded-md" source={{ uri: event.image }} />
-        <Text className="font-SpaceGrotesk text-3xl">{event.title}</Text>
-        <Text className="font-SpaceGrotesk text-xl">{event.description}</Text>
+        <Image className="aspect-video w-full rounded-md" source={{ uri: event[0]?.image_uri }} />
+        <Text className="font-SpaceGrotesk text-3xl">{event[0]?.title}</Text>
+        <Text className="font-SpaceGrotesk text-xl">{event[0]?.description}</Text>
         <View className="flex-row items-start gap-4">
           <AntDesign name="calendar" size={24} color="gray" />
           <View className="flex-col gap-1">
             <Text className="font-SpaceGrotesk text-xl text-gray-500">
-              {dayjs(event.datetime).format('ddd, D MMMM YYYY h:mm A')}
+              {dayjs(event[0]?.datetime).format('ddd, D MMMM YYYY h:mm A')}
             </Text>
           </View>
         </View>
         <View className="flex-row gap-4">
           <Entypo name="location-pin" size={28} color="gray" />
-          <Text className="font-SpaceGrotesk text-xl text-gray-500">{event.location}</Text>
+          <Text className="font-SpaceGrotesk text-xl text-gray-500">{event[0]?.location}</Text>
         </View>
       </View>
 

@@ -6,7 +6,7 @@ export interface eventlist {
   description: string;
   datetime: string;
   location: string;
-  image: string;
+  image_uri: string;
 }
 
 export interface AuthProviderProps {

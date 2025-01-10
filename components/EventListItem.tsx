@@ -31,7 +31,7 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
               <Image
                 className="h-28 w-44 rounded-xl object-cover"
                 source={{
-                  uri: event.image,
+                  uri: event.image_uri,
                 }}
               />
             </View>
