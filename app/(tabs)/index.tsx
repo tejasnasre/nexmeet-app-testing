@@ -24,13 +24,13 @@ export default function Events() {
     <>
       <Stack.Screen
         options={{
-          title: 'Events',
+          title: 'Home',
           headerTitleStyle: { fontFamily: 'SpaceGrotesk' },
           headerTitleAlign: 'center',
           headerShown: false,
         }}
       />
-      <View className="bg-white pt-10">
+      <View className="bg-white py-16">
         {loading ? (
           <FlatList
             className="bg-white"

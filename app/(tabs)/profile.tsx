@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '~/utils/supabase';
-import { Button, TextInput, Text, View, Alert, Image } from 'react-native';
+import { Text, View, Alert, Image, Pressable } from 'react-native';
 import React from 'react';
-import { Stack } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import { useAuth } from '~/contexts/AuthProvider';
+import ProfileLoading from '~/components/Loaders/ProfileLoading';
+import Avatar from '~/components/Avatar';
 
 export default function Profile() {
   const [loading, setLoading] = useState(true);
@@ -27,6 +29,8 @@ export default function Profile() {
         .select(`username, website, avatar_url`)
         .eq('id', session?.user.id)
         .single();
+
+      // console.log(data);
       if (error && status !== 406) {
         throw error;
       }
@@ -45,93 +49,61 @@ export default function Profile() {
     }
   }
 
-  async function updateProfile({
-    username,
-    website,
-    avatar_url,
-  }: {
-    username: string;
-    website: string;
-    avatar_url: string;
-  }) {
-    try {
-      setLoading(true);
-      if (!session?.user) throw new Error('No user on the session!');
-
-      const updates = {
-        id: session?.user.id,
-        username,
-        website,
-        avatar_url,
-        updated_at: new Date(),
-      };
-
-      const { error } = await supabase.from('profiles').upsert(updates);
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
     <>
-      <View className="h-screen w-full items-center gap-10 bg-white py-10">
-        <Stack.Screen
-          options={{
-            title: 'Profile',
-            headerTitleStyle: { fontFamily: 'SpaceGrotesk' },
-            headerTitleAlign: 'center',
-          }}
-        />
+      <Stack.Screen
+        options={{
+          title: 'Profile',
+          headerTitleStyle: { fontFamily: 'SpaceGrotesk' },
+          headerTitleAlign: 'center',
+          headerShown: false,
+        }}
+      />
+      {loading ? (
+        <ProfileLoading />
+      ) : (
+        <View className="h-screen w-full items-center justify-around bg-white">
+          <View>
+            <Text className="text-center font-SpaceGrotesk text-3xl">Profile</Text>
+          </View>
 
-        <Image
-          className="h-40 w-40 rounded-full"
-          source={{
-            uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-          }}
-        />
+          <View className="w-full items-center gap-8">
+            {/* {avatarUrl ? (
+              <Image
+                source={{
+                  uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/sign/avatars/${avatarUrl}?token=${process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY}`,
+                }}
+                accessibilityLabel="Avatar"
+                className="h-40 w-40 rounded-full border-2 border-black"
+              />
+            ) : (
+              <Image
+                className="h-40 w-40 rounded-full border-2 border-black"
+                source={require('../../assets/dummy.png')}
+              />
+            )} */}
 
-        <Text className="font-SpaceGrotesk text-2xl">{session?.user?.email}</Text>
-        <Text className="font-SpaceGrotesk text-2xl">{username}</Text>
-        <Text className="font-SpaceGrotesk text-2xl">{website}</Text>
+            <Avatar url={avatarUrl} />
 
-        <TextInput
-          onChangeText={(text) => setUsername(text)}
-          value={username || ''}
-          placeholder="username"
-          autoCapitalize={'none'}
-          className="w-72 rounded-md border-2 border-black font-SpaceGrotesk"
-        />
+            <Text className="font-SpaceGrotesk text-xl">{session?.user?.email}</Text>
+            <Text className="font-SpaceGrotesk text-xl">{username}</Text>
+            <Text className="font-SpaceGrotesk text-xl">{website}</Text>
+          </View>
 
-        <View>
-          <TextInput
-            onChangeText={(text) => setWebsite(text)}
-            value={website || ''}
-            placeholder="website"
-            autoCapitalize={'none'}
-            className="w-72 rounded-md border-2 border-black font-SpaceGrotesk"
-          />
+          <View className="flex-row gap-4">
+            <Link
+              className="flex-row items-center gap-4 rounded-full bg-black p-4 font-SpaceGrotesk text-sm  text-white"
+              href={'/(profile)/updateprofile'}>
+              Update Profile
+            </Link>
+            <Pressable
+              className="flex-row items-center gap-4 rounded-full bg-black p-4"
+              onPress={() => supabase.auth.signOut()}>
+              <Text className="font-SpaceGrotesk text-sm text-white">Sign Out</Text>
+            </Pressable>
+          </View>
         </View>
-
-        <View>
-          <Button
-            title={loading ? 'Loading ...' : 'Update'}
-            onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
-            disabled={loading}
-          />
-        </View>
-
-        <View>
-          <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
-        </View>
-      </View>
+      )}
     </>
   );
 }

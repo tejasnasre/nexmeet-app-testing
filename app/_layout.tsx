@@ -23,7 +23,7 @@ export default function RootLayout() {
     }
   }, [fontsLoaded]);
 
-  console.log('Fonts loaded:', fontsLoaded); // Add this line
+  // console.log('Fonts loaded:', fontsLoaded);
 
   if (!fontsLoaded) {
     return null;
