@@ -6,6 +6,7 @@ import { eventlist } from '../types/types';
 import dayjs from 'dayjs';
 import { Link } from 'expo-router';
 import { supabase } from '~/utils/supabase';
+import EventImage from './EventImage';
 
 export interface EventListItemProps {
   event: eventlist;
@@ -44,12 +45,9 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
               </Text>
             </View>
             <View className="flex-col items-center justify-center">
-              <Image
-                className="h-28 w-44 rounded-xl object-cover"
-                source={{
-                  uri: event.image_uri,
-                }}
-              />
+              <View className="h-28 w-44 rounded-xl">
+                <EventImage url={event.image_uri} />
+              </View>
             </View>
           </View>
           <View className="mr-6 flex-row justify-between gap-3">

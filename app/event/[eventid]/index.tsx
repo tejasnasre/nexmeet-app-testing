@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { supabase } from '~/utils/supabase';
 import { eventlist } from '~/types/types';
 import { useAuth } from '~/contexts/AuthProvider';
+import EventImage from '~/components/EventImage';
 
 const eventPage = () => {
   const { eventid } = useLocalSearchParams();
@@ -65,7 +66,9 @@ const eventPage = () => {
         }}
       />
       <View className="gap-4 p-4 font-SpaceGrotesk">
-        <Image className="aspect-video w-full rounded-md" source={{ uri: event[0]?.image_uri }} />
+        <View className="h-96 w-96 rounded-md">
+          <EventImage url={event[0]?.image_uri} />
+        </View>
         <Text className="font-SpaceGrotesk text-3xl">{event[0]?.title}</Text>
         <Text className="font-SpaceGrotesk text-xl">{event[0]?.description}</Text>
         <View className="flex-row items-start gap-4">

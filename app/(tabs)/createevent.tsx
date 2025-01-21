@@ -44,7 +44,15 @@ const createevent = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('events')
-      .insert([{ title, description, datetime: date.toISOString(), user_id: user.id }])
+      .insert([
+        {
+          title,
+          description,
+          datetime: date.toISOString(),
+          image_uri: eventImageUrl,
+          user_id: user.id,
+        },
+      ])
       .select()
       .single();
 
@@ -56,6 +64,7 @@ const createevent = () => {
     setTitle('');
     setDescription('');
     setDate(new Date());
+    setEventImageUrl('');
 
     if (data) {
       Toast.success('Successfully created event');
@@ -119,7 +128,7 @@ const createevent = () => {
               </Pressable>
             </View>
 
-            <View>
+            <View className="h-80 w-80">
               <EventImage
                 url={eventImageUrl}
                 onUpload={(url: string) => {

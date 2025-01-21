@@ -104,11 +104,12 @@ export default function EventImage({ url, onUpload }: Props) {
         )}
 
         {eventImageUrl ? (
-          <View className="h-96 w-96 border-2 border-black">
+          <View className="h-full w-full">
             <Image
               source={{ uri: eventImageUrl }}
               accessibilityLabel="Event Image"
               className="h-full w-full"
+              resizeMode="contain"
             />
           </View>
         ) : (

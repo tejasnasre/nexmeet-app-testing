@@ -6,7 +6,6 @@ import { Link, Stack } from 'expo-router';
 import { useAuth } from '~/contexts/AuthProvider';
 import ProfileLoading from '~/components/Loaders/ProfileLoading';
 import Avatar from '~/components/Avatar';
-import { Toast } from 'toastify-react-native';
 import CustomToast from '~/components/CustomToast';
 
 export default function Profile() {
