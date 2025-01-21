@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '~/utils/supabase';
-import { Text, View, Alert, Image, Pressable } from 'react-native';
+import { Text, View, Alert, Pressable } from 'react-native';
 import React from 'react';
 import { Link, Stack } from 'expo-router';
 import { useAuth } from '~/contexts/AuthProvider';
 import ProfileLoading from '~/components/Loaders/ProfileLoading';
 import Avatar from '~/components/Avatar';
+import { Toast } from 'toastify-react-native';
+import CustomToast from '~/components/CustomToast';
 
 export default function Profile() {
   const [loading, setLoading] = useState(true);
@@ -59,30 +61,17 @@ export default function Profile() {
           headerShown: false,
         }}
       />
+
       {loading ? (
         <ProfileLoading />
       ) : (
         <View className="h-screen w-full items-center justify-around bg-white">
+          <CustomToast />
           <View>
             <Text className="text-center font-SpaceGrotesk text-3xl">Profile</Text>
           </View>
 
           <View className="w-full items-center gap-8">
-            {/* {avatarUrl ? (
-              <Image
-                source={{
-                  uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/sign/avatars/${avatarUrl}?token=${process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY}`,
-                }}
-                accessibilityLabel="Avatar"
-                className="h-40 w-40 rounded-full border-2 border-black"
-              />
-            ) : (
-              <Image
-                className="h-40 w-40 rounded-full border-2 border-black"
-                source={require('../../assets/dummy.png')}
-              />
-            )} */}
-
             <Avatar url={avatarUrl} />
 
             <Text className="font-SpaceGrotesk text-xl">{session?.user?.email}</Text>
