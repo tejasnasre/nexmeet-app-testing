@@ -113,7 +113,13 @@ export default function EventImage({ url, onUpload }: Props) {
             />
           </View>
         ) : (
-          <Text className="text-center font-SpaceGrotesk text-xl">No Image Click On Upload</Text>
+          <View className="mt-4 animate-pulse flex-col gap-3 p-2 px-4">
+            {/* Top Section */}
+            <View className="flex-row justify-between">
+              {/* Skeleton for Image */}
+              <View className="h-28 w-full rounded-xl bg-gray-300" />
+            </View>
+          </View>
         )}
       </View>
     </>

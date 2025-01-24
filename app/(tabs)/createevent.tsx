@@ -1,5 +1,5 @@
 import { TextInput, Text, SafeAreaView, View, Pressable, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { router, Stack } from 'expo-router';
 import { supabase } from '~/utils/supabase';
@@ -7,6 +7,7 @@ import { useAuth } from '~/contexts/AuthProvider';
 import { Toast } from 'toastify-react-native';
 import CustomToast from '~/components/CustomToast';
 import EventImage from '~/components/EventImage';
+import * as Location from 'expo-location';
 
 const createevent = () => {
   const { user }: any = useAuth();
@@ -15,10 +16,19 @@ const createevent = () => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [eventImageUrl, setEventImageUrl] = useState('');
+
+  useEffect(() => {
+    const getLocation = async () => {
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    };
+    getLocation();
+  }, []);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -51,6 +61,7 @@ const createevent = () => {
           datetime: date.toISOString(),
           image_uri: eventImageUrl,
           user_id: user.id,
+          location: `POINT(${location?.coords.longitude} ${location?.coords.latitude})`,
         },
       ])
       .select()
@@ -84,13 +95,10 @@ const createevent = () => {
           headerShown: false,
         }}
       />
-      <SafeAreaView className="flex-1 items-center gap-10 bg-white pt-28">
-        <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={true}>
-          <CustomToast />
-
-          <View>
-            <Text className="text-center font-SpaceGrotesk text-3xl">Create Event</Text>
-          </View>
+      <SafeAreaView className="w-full flex-1 bg-white pt-28">
+        <CustomToast />
+        <ScrollView className="w-full flex-1 px-4" showsVerticalScrollIndicator={true}>
+          <Text className="pb-10 text-center font-SpaceGrotesk text-3xl">Create Event</Text>
 
           <View className="gap-10">
             <View className="w-full flex-row items-center gap-2  border-2 border-black px-4">
@@ -128,7 +136,7 @@ const createevent = () => {
               </Pressable>
             </View>
 
-            <View className="h-80 w-80">
+            <View className="h-80 w-full">
               <EventImage
                 url={eventImageUrl}
                 onUpload={(url: string) => {
@@ -151,14 +159,12 @@ const createevent = () => {
             </View>
           </View>
 
-          <View>
-            <Pressable
-              disabled={loading}
-              onPress={createEvent}
-              className="w-full items-center gap-4 rounded-full bg-black p-4">
-              <Text className="font-SpaceGrotesk text-sm text-white">Create Event</Text>
-            </Pressable>
-          </View>
+          <Pressable
+            disabled={loading}
+            onPress={createEvent}
+            className="mb-10 mt-32 w-full items-center gap-4 rounded-full bg-black p-4">
+            <Text className="font-SpaceGrotesk text-sm text-white">Create Event</Text>
+          </Pressable>
         </ScrollView>
       </SafeAreaView>
     </>

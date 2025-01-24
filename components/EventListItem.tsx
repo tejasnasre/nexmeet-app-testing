@@ -31,7 +31,7 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
   return (
     <>
       <Link href={`/event/${event.id}`} asChild>
-        <Pressable className="mt-4 flex-col gap-3 p-2 px-4">
+        <Pressable className="mt-4 flex-col gap-8 p-2 px-4">
           <View className="flex-row justify-between">
             <View className="w-52 flex-col justify-center gap-2">
               <Text className="font-SpaceGrotesk font-semibold uppercase text-amber-600">
@@ -51,7 +51,10 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
             </View>
           </View>
           <View className="mr-6 flex-row justify-between gap-3">
-            <Text className="font-SpaceGrotesk text-gray-400 ">{attendees} Going</Text>
+            <Text className="font-SpaceGrotesk text-gray-400 ">
+              {attendees} Going {'  '} ✈ {Math.round((event.dist_meters ?? 0) / 1000)} km away{' '}
+            </Text>
+
             <View className="flex-row items-center justify-center gap-4">
               <EvilIcons name="share-google" size={22} color="gray" />
               <FontAwesome name="bookmark" size={22} color="gray" />

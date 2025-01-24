@@ -7,6 +7,7 @@ export interface eventlist {
   datetime: string;
   location: string;
   image_uri: string;
+  dist_meters?: number | null | undefined;
 }
 
 export interface AuthProviderProps {
