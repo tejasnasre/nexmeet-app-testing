@@ -1,4 +1,4 @@
-import { TextInput, Text, SafeAreaView, View, Pressable, ScrollView } from 'react-native';
+import { TextInput, Text, SafeAreaView, View, Pressable, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { router, Stack } from 'expo-router';
@@ -8,8 +8,18 @@ import { Toast } from 'toastify-react-native';
 import CustomToast from '~/components/CustomToast';
 import EventImage from '~/components/EventImage';
 import * as Location from 'expo-location';
+import AutoComplete from '~/components/AutoComplete';
+import useKeyboardTabsHandler from '~/components/useKeyboardTabsHandler';
+
+interface EventLocation {
+  latitude: number;
+  longitude: number;
+  display_name: string;
+}
 
 const createevent = () => {
+  useKeyboardTabsHandler();
+
   const { user }: any = useAuth();
 
   const [date, setDate] = useState(new Date());
@@ -17,6 +27,7 @@ const createevent = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<EventLocation | null>(null);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -61,7 +72,8 @@ const createevent = () => {
           datetime: date.toISOString(),
           image_uri: eventImageUrl,
           user_id: user.id,
-          location: `POINT(${location?.coords.longitude} ${location?.coords.latitude})`,
+          location: `POINT(${selectedLocation?.longitude} ${selectedLocation?.latitude})`,
+          location_name: selectedLocation?.display_name,
         },
       ])
       .select()
@@ -85,6 +97,10 @@ const createevent = () => {
     }
   };
 
+  const handleSelectLocation = (location: EventLocation) => {
+    setSelectedLocation(location);
+  };
+
   return (
     <>
       <Stack.Screen
@@ -97,75 +113,89 @@ const createevent = () => {
       />
       <SafeAreaView className="w-full flex-1 bg-white pt-28">
         <CustomToast />
-        <ScrollView className="w-full flex-1 px-4" showsVerticalScrollIndicator={true}>
-          <Text className="pb-10 text-center font-SpaceGrotesk text-3xl">Create Event</Text>
+        <FlatList
+          data={[{ key: 'form' }]}
+          renderItem={() => (
+            <View className="w-full flex-1 px-4">
+              <Text className="pb-10 text-center font-SpaceGrotesk text-3xl">Create Event</Text>
 
-          <View className="gap-10">
-            <View className="w-full flex-row items-center gap-2  border-2 border-black px-4">
-              <TextInput
-                className="flex-1 font-SpaceGrotesk"
-                placeholder="Event Title"
-                autoCapitalize="none"
-                value={title}
-                onChangeText={setTitle}
-              />
-            </View>
+              <View className="gap-10">
+                <View className="w-full flex-row items-center gap-2 border-2 border-black px-4">
+                  <TextInput
+                    className="flex-1 font-SpaceGrotesk"
+                    placeholder="Event Title"
+                    autoCapitalize="none"
+                    value={title}
+                    onChangeText={setTitle}
+                  />
+                </View>
 
-            <View className="w-full flex-row items-center gap-2  border-2 border-black px-4">
-              <TextInput
-                className="flex-1 font-SpaceGrotesk"
-                placeholder="Description"
-                multiline={true}
-                numberOfLines={8}
-                autoCapitalize="none"
-                value={description}
-                onChangeText={setDescription}
-              />
-            </View>
+                <View className="w-full flex-row items-center gap-2 border-2 border-black px-4">
+                  <TextInput
+                    className="flex-1 font-SpaceGrotesk"
+                    placeholder="Description"
+                    multiline={true}
+                    numberOfLines={8}
+                    autoCapitalize="none"
+                    value={description}
+                    onChangeText={setDescription}
+                  />
+                </View>
 
-            <View className="w-full flex-row gap-4">
+                <View>
+                  <AutoComplete locationData={[]} onSelectLocation={handleSelectLocation} />
+                </View>
+
+                <View className="w-full flex-row gap-4">
+                  <Pressable
+                    onPress={showDatepicker}
+                    className="w-auto items-center gap-4 rounded-full bg-black p-4">
+                    <Text className="font-SpaceGrotesk text-sm text-white">
+                      {date.toDateString()}
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    onPress={showTimepicker}
+                    className="w-auto items-center gap-4 rounded-full bg-black p-4">
+                    <Text className="font-SpaceGrotesk text-sm text-white">
+                      {date.toTimeString()}
+                    </Text>
+                  </Pressable>
+                </View>
+
+                <View className="h-80 w-full">
+                  <EventImage
+                    url={eventImageUrl}
+                    onUpload={(url: string) => {
+                      setEventImageUrl(url);
+                    }}
+                  />
+                </View>
+
+                <View>
+                  {show && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={date}
+                      mode={mode}
+                      minimumDate={new Date()}
+                      is24Hour={true}
+                      onChange={onChange}
+                    />
+                  )}
+                </View>
+              </View>
+
               <Pressable
-                onPress={showDatepicker}
-                className="w-auto items-center gap-4 rounded-full bg-black p-4">
-                <Text className="font-SpaceGrotesk text-sm text-white">{date.toDateString()}</Text>
-              </Pressable>
-              <Pressable
-                onPress={showTimepicker}
-                className="w-auto items-center gap-4 rounded-full bg-black p-4">
-                <Text className="font-SpaceGrotesk text-sm text-white">{date.toTimeString()}</Text>
+                disabled={loading}
+                onPress={createEvent}
+                className="mb-32 mt-32 w-full items-center gap-4 rounded-full bg-black p-4">
+                <Text className="font-SpaceGrotesk text-sm text-white">Create Event</Text>
               </Pressable>
             </View>
-
-            <View className="h-80 w-full">
-              <EventImage
-                url={eventImageUrl}
-                onUpload={(url: string) => {
-                  setEventImageUrl(url);
-                }}
-              />
-            </View>
-
-            <View>
-              {show && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={date}
-                  mode={mode}
-                  minimumDate={new Date()}
-                  is24Hour={true}
-                  onChange={onChange}
-                />
-              )}
-            </View>
-          </View>
-
-          <Pressable
-            disabled={loading}
-            onPress={createEvent}
-            className="mb-10 mt-32 w-full items-center gap-4 rounded-full bg-black p-4">
-            <Text className="font-SpaceGrotesk text-sm text-white">Create Event</Text>
-          </Pressable>
-        </ScrollView>
+          )}
+          keyExtractor={(item) => item.key}
+        />
       </SafeAreaView>
     </>
   );

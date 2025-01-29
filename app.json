@@ -27,7 +27,7 @@
     "icon": "./assets/nexmeet.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/nexmeet.png",
+      "image": "./assets/nexmeet-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -37,7 +37,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/nexmeet.png",
+        "foregroundImage": "./assets/nexmeet-splash.png",
         "backgroundColor": "#ffffff"
       }
     },

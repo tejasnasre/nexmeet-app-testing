@@ -104,14 +104,12 @@ export default function EventImage({ url, onUpload }: Props) {
         )}
 
         {eventImageUrl ? (
-          <View className="h-full w-full">
-            <Image
-              source={{ uri: eventImageUrl }}
-              accessibilityLabel="Event Image"
-              className="h-full w-full"
-              resizeMode="contain"
-            />
-          </View>
+          <Image
+            source={{ uri: eventImageUrl }}
+            accessibilityLabel="Event Image"
+            className="h-full w-full"
+            resizeMode="contain"
+          />
         ) : (
           <View className="mt-4 animate-pulse flex-col gap-3 p-2 px-4">
             {/* Top Section */}

@@ -101,11 +101,11 @@ export default function Signin() {
           <Text className="font-SpaceGrotesk text-sm text-white">SignIn</Text>
         </Pressable>
 
-        <Text className="font-SpaceGrotesk text-sm">OR</Text>
-        <Pressable className="flex-row items-center gap-4 rounded-full bg-black p-4">
+        {/* <Text className="font-SpaceGrotesk text-sm">OR</Text> */}
+        {/* <Pressable className="flex-row items-center gap-4 rounded-full bg-black p-4">
           <AntDesign name="google" size={15} color="white" />
           <Text className="font-SpaceGrotesk text-sm text-white">SignIn With Google</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
       <Text className="font-SpaceGrotesk">
         Don't Have Account?{' '}

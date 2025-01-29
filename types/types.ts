@@ -8,6 +8,9 @@ export interface eventlist {
   location: string;
   image_uri: string;
   dist_meters?: number | null | undefined;
+  lat?: number;
+  lng?: number;
+  location_name: string;
 }
 
 export interface AuthProviderProps {

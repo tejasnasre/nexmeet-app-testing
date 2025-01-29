@@ -24,11 +24,11 @@ const welcomepage = () => {
           source={require('../../assets/nexmeet_logo.png')}
         />
         <View className="items-center justify-center gap-6">
-          <Pressable className="flex-row items-center  gap-4 rounded-full bg-black p-4">
+          {/* <Pressable className="flex-row items-center  gap-4 rounded-full bg-black p-4">
             <AntDesign name="google" size={15} color="white" />
             <Text className="font-SpaceGrotesk text-sm text-white">Login With Google</Text>
-          </Pressable>
-          <Text className="font-SpaceGrotesk text-xl">OR</Text>
+          </Pressable> */}
+          {/* <Text className="font-SpaceGrotesk text-xl">OR</Text> */}
           <Link href="/signin" asChild>
             <Pressable className="flex-row items-center gap-4 rounded-full bg-black p-4">
               <MaterialIcons name="password" size={15} color="white" />

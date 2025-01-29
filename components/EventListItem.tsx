@@ -41,7 +41,7 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
                 {event.title}
               </Text>
               <Text className="font-SpaceGrotesk text-gray-600" numberOfLines={1}>
-                {event.location}
+                {event.location_name}
               </Text>
             </View>
             <View className="flex-col items-center justify-center">

@@ -18,7 +18,6 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: '#ffffff', // White background for the tab bar
           height: 60, // Increased height for better accessibility
-          borderRadius: 50, // Rounded corner
         },
         tabBarLabelStyle: {
           fontFamily: 'SpaceGrotesk',
